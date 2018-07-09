@@ -1,0 +1,26 @@
+group 'hadoop'
+version '1.0-SNAPSHOT'
+
+allprojects {
+    apply plugin: 'java'
+    apply plugin: 'idea'
+
+    sourceCompatibility = 1.8
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        compile(
+                'org.apache.hadoop:hadoop-core:1.2.1',
+                'com.google.guava:guava:23.0'
+        )
+        testCompile(
+                'junit:junit:4.12',
+                'org.apache.mrunit:mrunit:1.1.0:hadoop1'
+        )
+    }
+}
+
+
