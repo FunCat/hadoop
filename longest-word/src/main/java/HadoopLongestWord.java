@@ -8,9 +8,14 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
 
+import java.util.logging.Logger;
+
 public class HadoopLongestWord extends Configured implements Tool {
 
+    static Logger log = Logger.getLogger(HadoopLongestWord.class.getName());
+
     public static void main(String[] args) throws Exception {
+        log.info("Starting...");
         int res = ToolRunner.run(new HadoopLongestWord(), args);
         System.exit(res);
     }
@@ -29,15 +34,17 @@ public class HadoopLongestWord extends Configured implements Tool {
         FileInputFormat.addInputPath(job, new Path(args[0]));
         FileOutputFormat.setOutputPath(job, new Path(args[1]));
 
+        job.setMapOutputKeyClass(Text.class);
+        job.setMapOutputValueClass(Text.class);
+
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(IntWritable.class);
 
         job.setMapperClass(LongestWordMapper.class);
-        job.setCombinerClass(LongestWordReducer.class);
         job.setReducerClass(LongestWordReducer.class);
 
         int returnValue = job.waitForCompletion(true) ? 0 : 1;
-        System.out.println("Job finished Successful - " + job.isSuccessful());
+        log.info("Job finished Successful - " + job.isSuccessful());
 
         return returnValue;
     }

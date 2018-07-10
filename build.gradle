@@ -14,7 +14,9 @@ allprojects {
     dependencies {
         compile(
                 'org.apache.hadoop:hadoop-core:1.2.1',
-                'com.google.guava:guava:23.0'
+                'com.google.guava:guava:23.0',
+                'org.apache.logging.log4j:log4j-api:2.11.0',
+                'org.apache.logging.log4j:log4j-core:2.11.0'
         )
         testCompile(
                 'junit:junit:4.12',

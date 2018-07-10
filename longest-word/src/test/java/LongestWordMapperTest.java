@@ -82,7 +82,7 @@ public class LongestWordMapperTest {
     @Test
     public void testInputWithEqualLength() throws IOException {
         mapDriver.withInput(new LongWritable(0), new Text("one two"));
-        mapDriver.withOutput(LONGEST_WORD, new Text("one"));
+        mapDriver.withOutput(LONGEST_WORD, new Text("one two"));
         mapDriver.runTest();
     }
 
