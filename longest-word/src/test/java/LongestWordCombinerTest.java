@@ -1,4 +1,3 @@
-import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mrunit.mapreduce.ReduceDriver;
 import org.junit.Before;
@@ -8,14 +7,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LongestWordReducerTest {
+public class LongestWordCombinerTest {
 
     private static final Text LONGEST_WORD = new Text("LONGEST_WORD");
-    private ReduceDriver<Text, Text, Text, IntWritable> reduceDriver;
+    private ReduceDriver<Text, Text, Text, Text> reduceDriver;
 
     @Before
     public void setUp() {
-        LongestWordReducer reducer = new LongestWordReducer();
+        LongestWordCombiner reducer = new LongestWordCombiner();
         reduceDriver = ReduceDriver.newReduceDriver(reducer);
     }
 
@@ -26,7 +25,7 @@ public class LongestWordReducerTest {
         values.add(new Text("two"));
         values.add(new Text("three"));
         reduceDriver.withInput(LONGEST_WORD, values);
-        reduceDriver.withOutput(new Text("three"), new IntWritable(5));
+        reduceDriver.withOutput(LONGEST_WORD, new Text("one two three"));
         reduceDriver.runTest();
     }
 
@@ -38,7 +37,7 @@ public class LongestWordReducerTest {
         values.add(new Text("pig"));
         values.add(new Text("hive"));
         reduceDriver.withInput(LONGEST_WORD, values);
-        reduceDriver.withOutput(new Text("hadoop"), new IntWritable(6));
+        reduceDriver.withOutput(LONGEST_WORD, new Text("hive kafka hadoop pig"));
         reduceDriver.runTest();
     }
 
@@ -51,7 +50,7 @@ public class LongestWordReducerTest {
         values.add(new Text("duck"));
         values.add(new Text("dog"));
         reduceDriver.withInput(LONGEST_WORD, values);
-        reduceDriver.withOutput(new Text("rabbit"), new IntWritable(6));
+        reduceDriver.withOutput(LONGEST_WORD, new Text("mouse duck cat rabbit dog"));
         reduceDriver.runTest();
     }
 
@@ -61,7 +60,7 @@ public class LongestWordReducerTest {
         values.add(new Text("car"));
         values.add(new Text("bus"));
         reduceDriver.withInput(LONGEST_WORD, values);
-        reduceDriver.withOutput(new Text("bus car"), new IntWritable(3));
+        reduceDriver.withOutput(LONGEST_WORD, new Text("bus car"));
         reduceDriver.runTest();
     }
 
@@ -71,7 +70,7 @@ public class LongestWordReducerTest {
         values.add(new Text("car"));
         values.add(new Text("car"));
         reduceDriver.withInput(LONGEST_WORD, values);
-        reduceDriver.withOutput(new Text("car"), new IntWritable(3));
+        reduceDriver.withOutput(LONGEST_WORD, new Text("car"));
         reduceDriver.runTest();
     }
 }
