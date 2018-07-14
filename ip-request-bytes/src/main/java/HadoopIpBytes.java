@@ -62,6 +62,8 @@ public class HadoopIpBytes extends Configured implements Tool {
         job.setJarByClass(HadoopIpBytes.class);
         job.setJobName("HadoopIpBytes");
 
+        job.setSortComparatorClass(IpWritableComparator.class);
+
         FileInputFormat.addInputPath(job, new Path(args[0]));
         FileOutputFormat.setOutputPath(job, new Path(args[1]));
 

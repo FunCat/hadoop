@@ -1,8 +1,5 @@
 import com.google.common.base.Objects;
-import org.apache.hadoop.io.FloatWritable;
-import org.apache.hadoop.io.LongWritable;
-import org.apache.hadoop.io.Text;
-import org.apache.hadoop.io.Writable;
+import org.apache.hadoop.io.*;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -12,7 +9,7 @@ import java.io.IOException;
  * The IpWritable represents the information about the IP connection. It contains the name IP,
  * average count of bytes and total bytes.
  */
-public class IpWritable implements Writable {
+public class IpWritable implements Writable, WritableComparable<IpWritable>{
     private Text ip;
     private FloatWritable avgBytes;
     private LongWritable bytes;
@@ -92,5 +89,17 @@ public class IpWritable implements Writable {
     @Override
     public int hashCode() {
         return Objects.hashCode(ip, avgBytes, bytes);
+    }
+
+    @Override
+    public int compareTo(IpWritable o) {
+        int result = ip.compareTo(o.ip);
+        if (0 == result) {
+            result = avgBytes.compareTo(o.avgBytes);
+            if (0 == result){
+                result = bytes.compareTo(o.bytes);
+            }
+        }
+        return result;
     }
 }

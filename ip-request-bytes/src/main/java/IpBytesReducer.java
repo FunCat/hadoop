@@ -38,9 +38,11 @@ public class IpBytesReducer extends Reducer<Text, IpWritable, Text, IpWritable> 
             size++;
         }
 
-        float avgBytes = avg / size;
-        bufferIp.getIp(key.toString(), avgBytes, String.valueOf(total));
-        log.info("REDUCER: Ip: " + key + ", avg bytes: " + avgBytes + ", total bytes: " + total);
-        context.write(key, bufferIp);
+        if (size != 0) {
+            float avgBytes = avg / size;
+            bufferIp.getIp(key.toString(), avgBytes, String.valueOf(total));
+            log.info("REDUCER: Ip: " + key + ", avg bytes: " + avgBytes + ", total bytes: " + total);
+            context.write(key, bufferIp);
+        }
     }
 }
