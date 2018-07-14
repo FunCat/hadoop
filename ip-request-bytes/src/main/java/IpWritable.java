@@ -6,38 +6,26 @@ import java.io.DataOutput;
 import java.io.IOException;
 
 /**
- * The IpWritable represents the information about the IP connection. It contains the name IP,
- * average count of bytes and total bytes.
+ * The IpWritable represents the information about the IP connection. It contains the average count
+ * of bytes and total bytes.
  */
-public class IpWritable implements Writable, WritableComparable<IpWritable>{
-    private Text ip;
+public class IpWritable implements Writable, WritableComparable<IpWritable> {
     private FloatWritable avgBytes;
     private LongWritable bytes;
 
     public IpWritable() {
-        this.ip = new Text();
         this.avgBytes = new FloatWritable(0);
         this.bytes = new LongWritable(0);
     }
 
-    public IpWritable(Text ip, FloatWritable avgBytes, LongWritable bytes) {
-        this.ip = ip;
+    public IpWritable(FloatWritable avgBytes, LongWritable bytes) {
         this.avgBytes = avgBytes;
         this.bytes = bytes;
     }
 
-    public void getIp(String ip, float avgBytes, String bytes) {
-        this.ip.set(ip);
+    public void getIp(float avgBytes, String bytes) {
         this.avgBytes.set(avgBytes);
         this.bytes.set(Long.valueOf(bytes));
-    }
-
-    public Text getIp() {
-        return ip;
-    }
-
-    public void setIp(Text ip) {
-        this.ip = ip;
     }
 
     public FloatWritable getAvgBytes() {
@@ -59,14 +47,12 @@ public class IpWritable implements Writable, WritableComparable<IpWritable>{
 
     @Override
     public void write(DataOutput dataOutput) throws IOException {
-        ip.write(dataOutput);
         avgBytes.write(dataOutput);
         bytes.write(dataOutput);
     }
 
     @Override
     public void readFields(DataInput dataInput) throws IOException {
-        ip.readFields(dataInput);
         avgBytes.readFields(dataInput);
         bytes.readFields(dataInput);
     }
@@ -81,24 +67,20 @@ public class IpWritable implements Writable, WritableComparable<IpWritable>{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         IpWritable that = (IpWritable) o;
-        return Objects.equal(ip, that.ip) &&
-            Objects.equal(avgBytes, that.avgBytes) &&
+        return Objects.equal(avgBytes, that.avgBytes) &&
             Objects.equal(bytes, that.bytes);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(ip, avgBytes, bytes);
+        return Objects.hashCode(avgBytes, bytes);
     }
 
     @Override
     public int compareTo(IpWritable o) {
-        int result = ip.compareTo(o.ip);
+        int result = avgBytes.compareTo(o.avgBytes);
         if (0 == result) {
-            result = avgBytes.compareTo(o.avgBytes);
-            if (0 == result){
-                result = bytes.compareTo(o.bytes);
-            }
+            result = bytes.compareTo(o.bytes);
         }
         return result;
     }

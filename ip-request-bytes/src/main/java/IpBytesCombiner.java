@@ -38,7 +38,7 @@ public class IpBytesCombiner extends Reducer<Text, IpWritable, Text, IpWritable>
         }
 
         float avgBytes = (float) total / size;
-        bufferIp.getIp(key.toString(), avgBytes, String.valueOf(total));
+        bufferIp.getIp(avgBytes, String.valueOf(total));
         log.info("COMBINER: Ip: " + key + ", avg bytes: " + avgBytes + ", total bytes: " + total);
         context.write(key, bufferIp);
     }

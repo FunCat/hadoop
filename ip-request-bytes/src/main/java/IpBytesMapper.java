@@ -28,6 +28,7 @@ import java.util.regex.Pattern;
 public class IpBytesMapper extends Mapper<LongWritable, Text, Text, IpWritable> {
 
     private static Logger log = Logger.getLogger(IpBytesMapper.class.getName());
+    private Text buffer = new Text();
     private IpWritable bufferIp = new IpWritable();
     private static Pattern patternOkRequest = Pattern.compile("(ip\\d+) (\\W)* \\[.*\\] \"([\\s\\w\\S]+?)\" [\\d]* ([\\d]*) \"([\\s\\w\\S]*?)\" \"((\\w*\\/[\\d.]*)*[\\s\\w\\S]+?)\"");
     private static Pattern patternBadRequest = Pattern.compile("(ip\\d+) (\\W)* \\[.*\\] \"([\\s\\w\\S]+?)\" [\\d]* - \"([\\s\\w\\S]+?)\" \"((\\w*\\/[\\d.]*)*[\\s\\w\\S]+?)\"");
@@ -50,8 +51,9 @@ public class IpBytesMapper extends Mapper<LongWritable, Text, Text, IpWritable> 
             }
             log.info("MAPPER: ip: " + ip + ", bytes: " + bytes + ", user agent: " + userAgent);
 
-            bufferIp.getIp(ip, 0, bytes);
-            context.write(bufferIp.getIp(), bufferIp);
+            bufferIp.getIp(0, bytes);
+            buffer.set(ip);
+            context.write(buffer, bufferIp);
         } else {
             matcher = patternBadRequest.matcher(line);
             if (matcher.matches() && matcher.groupCount() == 6) {
@@ -64,8 +66,9 @@ public class IpBytesMapper extends Mapper<LongWritable, Text, Text, IpWritable> 
                 }
                 log.info("MAPPER: ip: " + ip + ", bytes: 0, user agent: " + userAgent);
 
-                bufferIp.getIp(ip, 0, "0");
-                context.write(bufferIp.getIp(), bufferIp);
+                bufferIp.getIp(0, "0");
+                buffer.set(ip);
+                context.write(buffer, bufferIp);
             } else {
                 throw new InvalidInputException(Collections.singletonList(new IOException("Invalid input format! " + line)));
             }
