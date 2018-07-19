@@ -5,8 +5,8 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 /**
- * IpBytesReducer get the information about each ip and how many bytes they received.
- * So, IpBytesReducer groups the ip by their names and calculate the average number of bytes and
+ * IpBytesCombiner get the information about each ip and how many bytes they received.
+ * So, IpBytesCombiner groups the ip by their names and calculate the average number of bytes and
  * the total number for the each ip group.
  *
  * For example:

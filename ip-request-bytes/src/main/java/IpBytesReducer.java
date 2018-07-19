@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 
 /**
  * IpBytesReducer get the information about each ip group and calculate the average number of bytes
- * and the total number for the same ip groups, if they were received fro the different combiners.
+ * and the total number for the same ip groups, if they were received for the different combiners.
  *
  * For example:
  * INPUT:

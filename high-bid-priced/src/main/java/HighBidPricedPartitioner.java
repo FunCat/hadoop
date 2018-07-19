@@ -1,6 +1,10 @@
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Partitioner;
 
+/**
+ * The HighBidPricedPartitioner determines by which reducer will process the record. As a parameter
+ * for splitting between reducers, the HighBidPricedPartitioner uses the name of operation system.
+ */
 public class HighBidPricedPartitioner extends Partitioner<Text, CityWritable> {
 
     @Override

@@ -5,26 +5,30 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
+/**
+ * The CityWritable represents the information about the city. It contains the city id,
+ * amount of high-bid-priced which is more than 250 and the operation system.
+ */
 public class CityWritable implements Writable {
     private IntWritable cityId;
-    private IntWritable biddingPrice;
+    private IntWritable counter;
     private Text os;
 
     public CityWritable() {
         this.cityId = new IntWritable(0);
-        this.biddingPrice = new IntWritable(0);
+        this.counter = new IntWritable(0);
         this.os = new Text();
     }
 
-    public CityWritable(IntWritable cityId, IntWritable biddingPrice, Text os) {
+    public CityWritable(IntWritable cityId, IntWritable counter, Text os) {
         this.cityId = cityId;
-        this.biddingPrice = biddingPrice;
+        this.counter = counter;
         this.os = os;
     }
 
-    public void getCity(int cityId, int biddingPrice, String os) {
+    public void getCity(int cityId, int counter, String os) {
         this.cityId.set(cityId);
-        this.biddingPrice.set(biddingPrice);
+        this.counter.set(counter);
         this.os.set(os);
     }
 
@@ -36,12 +40,12 @@ public class CityWritable implements Writable {
         this.cityId = cityId;
     }
 
-    public IntWritable getBiddingPrice() {
-        return biddingPrice;
+    public IntWritable getCounter() {
+        return counter;
     }
 
-    public void setBiddingPrice(IntWritable biddingPrice) {
-        this.biddingPrice = biddingPrice;
+    public void setCounter(IntWritable counter) {
+        this.counter = counter;
     }
 
     public Text getOs() {
@@ -55,20 +59,20 @@ public class CityWritable implements Writable {
     @Override
     public void write(DataOutput dataOutput) throws IOException {
         cityId.write(dataOutput);
-        biddingPrice.write(dataOutput);
+        counter.write(dataOutput);
         os.write(dataOutput);
     }
 
     @Override
     public void readFields(DataInput dataInput) throws IOException {
         cityId.readFields(dataInput);
-        biddingPrice.readFields(dataInput);
+        counter.readFields(dataInput);
         os.readFields(dataInput);
     }
 
     @Override
     public String toString() {
-        return biddingPrice.toString();
+        return counter.toString();
     }
 
     @Override
@@ -77,12 +81,12 @@ public class CityWritable implements Writable {
         if (o == null || getClass() != o.getClass()) return false;
         CityWritable that = (CityWritable) o;
         return Objects.equal(cityId, that.cityId) &&
-            Objects.equal(biddingPrice, that.biddingPrice) &&
+            Objects.equal(counter, that.counter) &&
             Objects.equal(os, that.os);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(cityId, biddingPrice, os);
+        return Objects.hashCode(cityId, counter, os);
     }
 }

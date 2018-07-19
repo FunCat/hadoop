@@ -15,6 +15,22 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * The HighBidPricedMapper reads the file from hdfs line by line, uses the regexp to get the useful information
+ * and create {@link CityWritable} with this information.
+ *
+ * The HighBidPricedMapper uses the counter field not as a counter. The mapper save the bidding price
+ * to this field and the {@link HighBidPricedCombiner} will calculate how many cities have the
+ * bidding price higher than 250.
+ *
+ * For example:
+ * INPUT:
+ * 2e72d1bd7185fb76d69c852c57436d37	20131019025500549	1	CAD06D3WCtf	Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1)	113.117.187.*	216	234	2	33235ca84c5fee9254e6512a41b3ad5e	8bbb5a81cc3d680dd0c27cf4886ddeae	null	3061584349	728	90	OtherView	Na	5	7330	277	48	null	2259	10057,13800,13496,10079,10076,10075,10093,10129,10024,10006,10110,13776,10146,10120,10115,10063
+ * OUTPUT:
+ * cityId - 234
+ * counter - 277
+ * os - Windows NT 5
+ */
 public class HighBidPricedMapper extends Mapper<LongWritable, Text, Text, CityWritable> {
 
     private static Logger log = Logger.getLogger(HighBidPricedMapper.class.getName());
