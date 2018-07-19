@@ -1,11 +1,11 @@
-group 'ip-request-bytes'
+group 'high-bid-priced'
 version '1.0-SNAPSHOT'
 
 jar {
     manifest {
         attributes(
                 'Class-Path': configurations.compile.collect { it.toURI().toString() }.join(' '),
-                'Main-Class': 'HadoopIpBytes'
+                'Main-Class': 'HadoopHighBidPriced'
         )
     }
 }

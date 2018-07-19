@@ -1,4 +1,5 @@
 rootProject.name = 'hadoop'
 include 'longest-word'
 include 'ip-request-bytes'
+include 'high-bid-priced'
 
