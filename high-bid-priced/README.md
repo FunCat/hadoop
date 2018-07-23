@@ -18,11 +18,17 @@ Example:
 > aba	607
 
 For running application you need to compile it by the following command:
-```gradle :high-bid-priced:clean :high-bid-priced:build```
+```gradle
+gradle :high-bid-priced:clean :high-bid-priced:build
+```
 
 After that you need to run the application on the hadoop environment. Before the start put
 the input file to the hdfs and check that the directory for the output doesn't exist.
 Run the following command:
-```hadoop jar [path_to_the_jar] [path_to_the_input_file] [path_to_the_output_directory] [path_to_the_lookup_file]```
+```
+hadoop jar [path_to_the_jar] [path_to_the_input_file] [path_to_the_output_directory] [path_to_the_lookup_file]
+```
 Example:
-```hadoop jar ip-request-bytes-1.0-SNAPSHOT.jar /input /output /city.en.txt```
+```
+hadoop jar ip-request-bytes-1.0-SNAPSHOT.jar /input /output /city.en.txt
+```

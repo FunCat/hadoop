@@ -19,16 +19,26 @@ Example:
 > ip1,25819.02,2762635
 
 For running application you need to compile it by the following command:
-```gradle :ip-request-bytes:clean :ip-request-bytes:build```
+```gradle
+gradle :ip-request-bytes:clean :ip-request-bytes:build
+```
 
 After that you need to run the application on the hadoop environment. Before the start put
 the input file to the hdfs and check that the directory for the output doesn't exist.
 Run the following command:
-```hadoop jar [path_to_the_jar] [path_to_the_input_file] [path_to_the_output_directory]```
+```
+hadoop jar [path_to_the_jar] [path_to_the_input_file] [path_to_the_output_directory]
+```
 Example:
-```hadoop jar ip-request-bytes-1.0-SNAPSHOT.jar /input /output```
+```
+hadoop jar ip-request-bytes-1.0-SNAPSHOT.jar /input /output
+```
 
 To read the output Sequence file use the following command:
-```hadoop fs -text [path_to_the_output_file]```
+```
+hadoop fs -text [path_to_the_output_file]
+```
 Example:
-```hadoop fs -text hadoop/IpRequestBytes/output/part-r-00000.snappy```
+```
+hadoop fs -text hadoop/IpRequestBytes/output/part-r-00000.snappy
+```
