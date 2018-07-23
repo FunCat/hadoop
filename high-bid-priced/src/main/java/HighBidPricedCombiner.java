@@ -30,21 +30,18 @@ public class HighBidPricedCombiner extends Reducer<Text, CityWritable, Text, Cit
     @Override
     protected void reduce(Text key, Iterable<CityWritable> values, Context context) throws IOException, InterruptedException {
         int counter = 0;
+        int cityId = 0;
+        String os = "";
 
-        CityWritable first = values.iterator().next();
-        int cityId = first.getCityId().get();
-        int highBidPrice = first.getCounter().get();
-        String os = first.getOs().toString();
-
-        if (highBidPrice > 250) {
+        if(values.iterator().hasNext()) {
+            CityWritable first = values.iterator().next();
+            cityId = first.getCityId().get();
+            os = first.getOs().toString();
             counter++;
         }
 
         for (CityWritable value : values) {
-            highBidPrice = value.getCounter().get();
-            if (highBidPrice > 250) {
-                counter++;
-            }
+            counter++;
         }
 
         if (counter > 0) {

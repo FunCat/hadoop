@@ -62,23 +62,4 @@ public class HighBidPricedCombinerTest {
         reduceDriver.withAllOutput(output);
         reduceDriver.runTest();
     }
-
-    @Test
-    public void testCaseWhenLessThan250() throws IOException {
-        Text shaoguan = new Text("shaoguan");
-        Text os = new Text("Windows NT 4");
-        CityWritable cityWritable = new CityWritable(new IntWritable(218), new IntWritable(294), os);
-        CityWritable cityWritable2 = new CityWritable(new IntWritable(218), new IntWritable(234), os);
-        CityWritable cityWritable1_total = new CityWritable(new IntWritable(218), new IntWritable(1), os);
-
-        List<Pair<Text, List<CityWritable>>> values = Arrays.asList(
-            new Pair<>(shaoguan, Arrays.asList(cityWritable, cityWritable2))
-        );
-        reduceDriver.withAll(values);
-        List<Pair<Text, CityWritable>> output = Arrays.asList(
-            new Pair<>(shaoguan, cityWritable1_total)
-        );
-        reduceDriver.withAllOutput(output);
-        reduceDriver.runTest();
-    }
 }

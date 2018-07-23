@@ -85,14 +85,15 @@ public class HighBidPricedMapper extends Mapper<LongWritable, Text, Text, CityWr
             int cityId = Integer.parseInt(matcher.group(2));
             int biddingPrice = Integer.parseInt(matcher.group(3));
 
-            bufferCity.getCity(cityId, biddingPrice, os);
-            if(cityNames.containsKey(cityId)) {
-                buffer.set(cityNames.get(cityId));
+            if (biddingPrice > 250) {
+                bufferCity.getCity(cityId, biddingPrice, os);
+                if (cityNames.containsKey(cityId)) {
+                    buffer.set(cityNames.get(cityId));
+                } else {
+                    buffer.set(cityNames.get(0));
+                }
+                context.write(buffer, bufferCity);
             }
-            else{
-                buffer.set(cityNames.get(0));
-            }
-            context.write(buffer, bufferCity);
         } else {
             throw new InvalidInputException(Collections.singletonList(new IOException("Invalid input format! " + line)));
         }

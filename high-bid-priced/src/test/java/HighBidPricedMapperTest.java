@@ -57,4 +57,10 @@ public class HighBidPricedMapperTest {
         mapDriver.withOutput(new Text("guangzhou"), new CityWritable(new IntWritable(217), new IntWritable(294), new Text("Mozilla/5.0 (iPad; CPU OS 6_0_1 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10A523 Safari/8536.25")));
         mapDriver.runTest();
     }
+
+    @Test
+    public void testCaseWhenLessThan250() throws IOException {
+        mapDriver.withInput(new LongWritable(0), new Text("a82c799fa5750bc222b8865760ce0228\t20131019140006573\t1\tCBO9rK5JbnL\tMozilla/5.0 (iPad; CPU OS 6_0_1 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10A523 Safari/8536.25\t183.235.255.*\t216\t217\t3\t3043163ba84753b4b51dd3290caeae67\t2311c13fac7b397bae9351e3d18324dc\tnull\tNews_F_Rectangle\t300\t250\tNa\tNa\t80\t7323\t234\t80\tnull\t2259\t10057,10048,11278,10067,10059,10684,14273,10075,13042,10083,10006,10024,10149,10110,10123,10031,13776,13403,10063,10116"));
+        mapDriver.runTest();
+    }
 }

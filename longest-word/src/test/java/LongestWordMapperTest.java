@@ -1,10 +1,12 @@
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mrunit.mapreduce.MapDriver;
+import org.apache.hadoop.mrunit.types.Pair;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 public class LongestWordMapperTest {
     private static final Text LONGEST_WORD = new Text("LONGEST_WORD");
@@ -82,14 +84,16 @@ public class LongestWordMapperTest {
     @Test
     public void testInputWithEqualLength() throws IOException {
         mapDriver.withInput(new LongWritable(0), new Text("one two"));
-        mapDriver.withOutput(LONGEST_WORD, new Text("one two"));
+        mapDriver.withAllOutput(Arrays.asList(
+            new Pair<>(LONGEST_WORD, new Text("one")),
+            new Pair<>(LONGEST_WORD, new Text("two"))
+        ));
         mapDriver.runTest();
     }
 
     @Test
     public void testInputEmptyLine() throws IOException {
         mapDriver.withInput(new LongWritable(0), new Text(""));
-        mapDriver.withOutput(LONGEST_WORD, new Text(""));
         mapDriver.runTest();
     }
 

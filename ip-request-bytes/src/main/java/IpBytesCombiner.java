@@ -12,14 +12,14 @@ import java.util.logging.Logger;
  * For example:
  * INPUT:
  * [
- *      {ip: "ip1", avgBytes: 0.0, bytes: 514},
- *      {ip: "ip2", avgBytes: 0.0, bytes: 654},
- *      {ip: "ip2", avgBytes: 0.0, bytes: 358}
+ *      {ip: "ip1", avgBytes: 0.0, count: 1, bytes: 514},
+ *      {ip: "ip2", avgBytes: 0.0, count: 1, bytes: 654},
+ *      {ip: "ip2", avgBytes: 0.0, count: 1, bytes: 358}
  * ]
  * OUTPUT
  * [
- *      {ip: "ip1", avgBytes: 514.0, bytes: 514},
- *      {ip: "ip2", avgBytes: 506.0, bytes: 1012}
+ *      {ip: "ip1", avgBytes: 0.0, count: 1, bytes: 514},
+ *      {ip: "ip2", avgBytes: 0.0, count: 2, bytes: 1012}
  * ]
  */
 public class IpBytesCombiner extends Reducer<Text, IpWritable, Text, IpWritable> {
@@ -34,12 +34,11 @@ public class IpBytesCombiner extends Reducer<Text, IpWritable, Text, IpWritable>
 
         for (IpWritable value : values) {
             total += value.getBytes().get();
-            size++;
+            size += value.getCount().get();
         }
 
-        float avgBytes = (float) total / size;
-        bufferIp.getIp(avgBytes, String.valueOf(total));
-        log.info("COMBINER: Ip: " + key + ", avg bytes: " + avgBytes + ", total bytes: " + total);
+        bufferIp.getIp(0, size, String.valueOf(total));
+        log.info("COMBINER: Ip: " + key + ", avg bytes: 0, count: " + size + ", total bytes: " + total);
         context.write(key, bufferIp);
     }
 }

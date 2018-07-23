@@ -1,4 +1,5 @@
 import org.apache.hadoop.io.FloatWritable;
+import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mrunit.mapreduce.MapDriver;
@@ -33,8 +34,8 @@ public class HadoopIpBytesTest {
         );
         mapReduceDriver.withAll(values);
         List<Pair<Text, IpWritable>> output = Arrays.asList(
-            new Pair<>(new Text("ip1"), new IpWritable(new FloatWritable(48478), new LongWritable(96956))),
-            new Pair<>(new Text("ip2"), new IpWritable(new FloatWritable(390), new LongWritable(390)))
+            new Pair<>(new Text("ip1"), new IpWritable(new FloatWritable(48478), new IntWritable(2), new LongWritable(96956))),
+            new Pair<>(new Text("ip2"), new IpWritable(new FloatWritable(390), new IntWritable(1), new LongWritable(390)))
         );
         mapReduceDriver.withAllOutput(output);
         mapReduceDriver.runTest();
@@ -49,9 +50,9 @@ public class HadoopIpBytesTest {
         );
         mapReduceDriver.withAll(values);
         List<Pair<Text, IpWritable>> output = Arrays.asList(
-            new Pair<>(new Text("ip1"), new IpWritable(new FloatWritable(40028), new LongWritable(40028))),
-            new Pair<>(new Text("ip2"), new IpWritable(new FloatWritable(390), new LongWritable(390))),
-            new Pair<>(new Text("ip3"), new IpWritable(new FloatWritable(72209), new LongWritable(72209)))
+            new Pair<>(new Text("ip1"), new IpWritable(new FloatWritable(40028), new IntWritable(1), new LongWritable(40028))),
+            new Pair<>(new Text("ip2"), new IpWritable(new FloatWritable(390), new IntWritable(1), new LongWritable(390))),
+            new Pair<>(new Text("ip3"), new IpWritable(new FloatWritable(72209), new IntWritable(1), new LongWritable(72209)))
         );
         mapReduceDriver.withAllOutput(output);
         mapReduceDriver.runTest();
@@ -64,7 +65,7 @@ public class HadoopIpBytesTest {
         );
         mapReduceDriver.withAll(values);
         List<Pair<Text, IpWritable>> output = Arrays.asList(
-            new Pair<>(new Text("ip1"), new IpWritable(new FloatWritable(40028), new LongWritable(40028)))
+            new Pair<>(new Text("ip1"), new IpWritable(new FloatWritable(40028), new IntWritable(1), new LongWritable(40028)))
         );
         mapReduceDriver.withAllOutput(output);
         mapReduceDriver.runTest();

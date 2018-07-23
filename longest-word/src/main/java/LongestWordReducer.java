@@ -33,11 +33,7 @@ public class LongestWordReducer extends Reducer<Text, Text, Text, IntWritable> {
         Set<String> words = new HashSet<>();
 
         for (Text value : values) {
-            String line = value.toString();
-            StringTokenizer tokenizer = new StringTokenizer(line);
-            while (tokenizer.hasMoreTokens()) {
-                words.add(tokenizer.nextToken());
-            }
+            words.add(value.toString());
         }
 
         words.stream()

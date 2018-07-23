@@ -23,6 +23,7 @@ import java.util.regex.Pattern;
  * OUTPUT:
  * ip - ip1
  * avgBytes - 0
+ * count - 1
  * totalBytes - 40028
  */
 public class IpBytesMapper extends Mapper<LongWritable, Text, Text, IpWritable> {
@@ -51,7 +52,7 @@ public class IpBytesMapper extends Mapper<LongWritable, Text, Text, IpWritable> 
             }
             log.info("MAPPER: ip: " + ip + ", bytes: " + bytes + ", user agent: " + userAgent);
 
-            bufferIp.getIp(0, bytes);
+            bufferIp.getIp(0, 1, bytes);
             buffer.set(ip);
             context.write(buffer, bufferIp);
         } else {
@@ -66,7 +67,7 @@ public class IpBytesMapper extends Mapper<LongWritable, Text, Text, IpWritable> 
                 }
                 log.info("MAPPER: ip: " + ip + ", bytes: 0, user agent: " + userAgent);
 
-                bufferIp.getIp(0, "0");
+                bufferIp.getIp(0, 1, "0");
                 buffer.set(ip);
                 context.write(buffer, bufferIp);
             } else {

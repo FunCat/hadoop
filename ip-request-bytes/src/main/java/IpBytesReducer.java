@@ -11,14 +11,14 @@ import java.util.logging.Logger;
  * For example:
  * INPUT:
  * [
- *      {ip: "ip1", avgBytes: 514.0, bytes: 514},
- *      {ip: "ip2", avgBytes: 506.0, bytes: 1012},
- *      {ip: "ip2", avgBytes: 104.5, bytes: 214}
+ *      {ip: "ip1", avgBytes: 0.0, count: 1, bytes: 514},
+ *      {ip: "ip2", avgBytes: 0.0, count: 2, bytes: 1012},
+ *      {ip: "ip2", avgBytes: 0.0, count: 2 bytes: 214}
  * ]
  * OUTPUT
  * [
- *      {ip: "ip1", avgBytes: 514.0, bytes: 514},
- *      {ip: "ip2", avgBytes: 305.25, bytes: 1226}
+ *      {ip: "ip1", avgBytes: 514.0, count: 1, bytes: 514},
+ *      {ip: "ip2", avgBytes: 306.5, count: 4, bytes: 1226}
  * ]
  */
 public class IpBytesReducer extends Reducer<Text, IpWritable, Text, IpWritable> {
@@ -29,18 +29,16 @@ public class IpBytesReducer extends Reducer<Text, IpWritable, Text, IpWritable> 
     @Override
     protected void reduce(Text key, Iterable<IpWritable> values, Context context) throws IOException, InterruptedException {
         long total = 0;
-        float avg = 0;
         int size = 0;
 
         for (IpWritable value : values) {
             total += value.getBytes().get();
-            avg += value.getAvgBytes().get();
-            size++;
+            size += value.getCount().get();
         }
 
         if (size != 0) {
-            float avgBytes = avg / size;
-            bufferIp.getIp(avgBytes, String.valueOf(total));
+            float avgBytes = (float) total / size;
+            bufferIp.getIp(avgBytes, size, String.valueOf(total));
             log.info("REDUCER: Ip: " + key + ", avg bytes: " + avgBytes + ", total bytes: " + total);
             context.write(key, bufferIp);
         }

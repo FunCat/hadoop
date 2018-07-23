@@ -3,10 +3,7 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
 
 import java.io.IOException;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.StringTokenizer;
+import java.util.*;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -50,18 +47,25 @@ public class LongestWordMapper extends Mapper<LongWritable, Text, Text, Text> {
             setOfWords.add(tokenizer.nextToken());
         }
 
-        setOfWords.stream()
-            .max(Comparator.comparing(String::length))
-            .ifPresent(s -> maxLength = s.length());
-        log.info("MAPPER: The max length: " + maxLength);
+        Optional<String> max = setOfWords.stream()
+            .max(Comparator.comparing(String::length));
 
-        String longestWords = setOfWords.stream()
-            .filter(s -> s.length() == maxLength)
-            .collect(Collectors.joining(" "));
-        log.info("MAPPER: The longest words: " + longestWords);
+        if(max.isPresent()){
+            int localMaxLength = max.get().length();
+            if(localMaxLength >= maxLength) {
+                maxLength = localMaxLength;
+                log.info("MAPPER: The max length: " + maxLength);
 
-        buffer.set(longestWords);
+                List<String> longestWords = setOfWords.stream()
+                    .filter(s -> s.length() == maxLength)
+                    .collect(Collectors.toList());
+                log.info("MAPPER: The longest words: " + longestWords);
 
-        context.write(word, buffer);
+                for (String longestWord : longestWords) {
+                    buffer.set(longestWord);
+                    context.write(word, buffer);
+                }
+            }
+        }
     }
 }

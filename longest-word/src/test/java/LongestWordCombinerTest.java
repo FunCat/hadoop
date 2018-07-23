@@ -1,10 +1,12 @@
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mrunit.mapreduce.ReduceDriver;
+import org.apache.hadoop.mrunit.types.Pair;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class LongestWordCombinerTest {
@@ -25,7 +27,7 @@ public class LongestWordCombinerTest {
         values.add(new Text("two"));
         values.add(new Text("three"));
         reduceDriver.withInput(LONGEST_WORD, values);
-        reduceDriver.withOutput(LONGEST_WORD, new Text("one two three"));
+        reduceDriver.withOutput(LONGEST_WORD, new Text("three"));
         reduceDriver.runTest();
     }
 
@@ -37,7 +39,7 @@ public class LongestWordCombinerTest {
         values.add(new Text("pig"));
         values.add(new Text("hive"));
         reduceDriver.withInput(LONGEST_WORD, values);
-        reduceDriver.withOutput(LONGEST_WORD, new Text("hive kafka hadoop pig"));
+        reduceDriver.withOutput(LONGEST_WORD, new Text("hadoop"));
         reduceDriver.runTest();
     }
 
@@ -50,7 +52,7 @@ public class LongestWordCombinerTest {
         values.add(new Text("duck"));
         values.add(new Text("dog"));
         reduceDriver.withInput(LONGEST_WORD, values);
-        reduceDriver.withOutput(LONGEST_WORD, new Text("mouse duck cat rabbit dog"));
+        reduceDriver.withOutput(LONGEST_WORD, new Text("rabbit"));
         reduceDriver.runTest();
     }
 
@@ -60,7 +62,10 @@ public class LongestWordCombinerTest {
         values.add(new Text("car"));
         values.add(new Text("bus"));
         reduceDriver.withInput(LONGEST_WORD, values);
-        reduceDriver.withOutput(LONGEST_WORD, new Text("bus car"));
+        reduceDriver.withAllOutput(Arrays.asList(
+            new Pair<>(LONGEST_WORD, new Text("bus")),
+            new Pair<>(LONGEST_WORD, new Text("car"))
+        ));
         reduceDriver.runTest();
     }
 
